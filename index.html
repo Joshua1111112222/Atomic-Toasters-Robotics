@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Toasters Robotics Team</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        header {
+            background-color: #800080; /* Purple */
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #333; /* Black */
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            margin-top: 0;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h3 {
+            cursor: pointer;
+            background-color: #800080; /* Purple */
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 0;
+            transition: background 0.3s;
+        }
+        .section h3:hover {
+            background-color: #5a005a;
+        }
+        .section p {
+            display: none;
+            padding: 10px;
+            border: 1px solid #800080; /* Purple */
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            margin: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .section p.show {
+            display: block;
+            opacity: 1;
+        }
+        footer {
+            background-color: #333; /* Black */
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .team-member {
+            cursor: pointer;
+            color: #800080;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .team-details {
+            display: none;
+            padding-left: 15px;
+            color: #555;
+        }
+    </style>
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            if (section.classList.contains("show")) {
+                section.classList.remove("show");
+                setTimeout(() => { section.style.display = "none"; }, 500);
+            } else {
+                section.style.display = "block";
+                setTimeout(() => { section.classList.add("show"); }, 10);
+            }
+        }
+
+        function toggleTeamDetails(memberId) {
+            var details = document.getElementById(memberId);
+            details.style.display = details.style.display === "block" ? "none" : "block";
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>Atomic Toasters Robotics Team</h1>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+</nav>
+
+<div class="container" id="home">
+    <h2>Welcome to the Atomic Toasters Robotics Team!</h2>
+    <p>We are here to have fun, spread the word of God, learn, and do well in competitions. Our team has achieved notable success, including making it to states.</p>
+    
+    <div class="section">
+        <h3 onclick="toggleSection('about')">About Us</h3>
+        <p id="about">
+            The Atomic Toasters Robotics Team is dedicated to promoting STEM education and fostering a passion for robotics among students. We participate in various competitions, such as FIRST Robotics. Our mission is to inspire the next generation of engineers and innovators through hands-on learning and teamwork.
+        </p>
+    </div>
+
+    <div class="section">
+        <h3 onclick="toggleSection('contact')">Contact Information</h3>
+        <p id="contact">
+            Contact us at <a href="mailto:joshuathe2011@gmail.com">joshuathe2011@gmail.com</a>. <br><br>
+            Follow us on YouTube by searching **"The Atomic Toasters FTC"**. <br><br>
+            **Address:** <br>
+            Atomic Toasters Robotics Team, Plymouth Christian Academy, Michigan <br><br>
+            **Phone:** (734)-788-0899 <br>
+            **Email:** <a href="mailto:joshuathe2011@gmail.com">joshuathe2011@gmail.com</a>
+        </p>
+    </div>
+
+    <div class="section">
+        <h3 onclick="toggleSection('sponsorship')">Sponsorship Opportunities</h3>
+        <p id="sponsorship">
+            Sponsorship helps us cover costs for materials, travel, and registration fees. **Interested?** Contact us at <a href="mailto:joshuathe2011@gmail.com">joshuathe2011@gmail.com</a>.
+        </p>
+    </div>
+
+    <div class="section"> 
+        <h3 onclick="toggleSection('Applications')">Applications</h3>
+        <p id="Applications">
+            Want to join the team? Fill out the application form: <br>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeKnWZVw1N18PZuVvVHcyndUH5fZ45shHjspM2dOnvQ7cRW_Q/viewform?usp=dialog" target="_blank">
+                Apply Here
+            </a>
+        </p>
+    </div>
+
+    <div class="section">
+        <h3 onclick="toggleSection('team')">Team Members</h3>
+        <p id="team">
+            <span class="team-member" onclick="toggleTeamDetails('teachers')">Teachers ▼</span>
+            <div id="teachers" class="team-details">
+                - Steve Freece (Build Mentor) <br>
+                - Chloe Malcom (Code Mentor) <br>
+                - Jessica Wash <br>
+                - Sam Oweis (Build Mentor)
+            </div>
+
+            <span class="team-member" onclick="toggleTeamDetails('mentors')">Mentors ▼</span>
+            <div id="mentors" class="team-details">
+                - Jadon Wright <br>
+                - Luke Beaudoin <br>
+                - Jack Dalfino
+            </div>
+
+            <span class="team-member" onclick="toggleTeamDetails('codeTeam')">Code Team ▼</span>
+            <div id="codeTeam" class="team-details">
+                - Joshua The
+            </div>
+
+            <span class="team-member" onclick="toggleTeamDetails('buildTeam')">Build Team ▼</span>
+            <div id="buildTeam" class="team-details">
+                - Caleb Wieland <br>
+                - Loriel Achondah <br>
+                - Nathan Hurd <br>
+                - Evan Sylvester <br>
+                - Aiden Dejesus
+            </div>
+        </p>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 Atomic Toasters Robotics Team. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
