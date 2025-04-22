@@ -11,12 +11,22 @@
       {
         "src": "logo.png",
         "sizes": "192x192",
-        "type": "logo.png"
+        "type": "image/png",
+        "purpose": "any maskable"
       },
       {
         "src": "logo.png",
         "sizes": "512x512",
-        "type": "logo.png"
+        "type": "image/png",
+        "purpose": "any maskable"
+      }
+    ],
+    "categories": ["education", "science"],
+    "screenshots": [
+      {
+        "src": "screenshot1.png",
+        "sizes": "1280x720",
+        "type": "image/png"
       }
     ]
   }
