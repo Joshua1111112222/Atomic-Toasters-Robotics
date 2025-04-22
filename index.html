@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#121212">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-touch-icon" content="images\logo.png">
     <title>Atomic Toasters Robotics Team</title>
     <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/logo.png">
     <style>
         :root {
             --primary: #9c27b0;
@@ -31,6 +31,11 @@
             padding: 0;
         }
 
+        html, body {
+            height: 100%;
+            overflow: auto;
+        }
+
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: var(--dark);
@@ -40,7 +45,8 @@
                 radial-gradient(circle at 25% 25%, rgba(156, 39, 176, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 75% 75%, rgba(0, 188, 212, 0.15) 0%, transparent 50%);
             min-height: 100vh;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         @supports (-webkit-touch-callout: none) {
@@ -118,6 +124,7 @@
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 1rem;
+            flex: 1;
         }
 
         .section {
@@ -172,6 +179,7 @@
             max-height: 1000px;
             padding: 1rem 1.5rem;
             opacity: 1;
+            overflow-y: auto;
         }
 
         /* Team Members Section */
@@ -288,11 +296,17 @@
         .calendar-container {
             background: var(--card-bg);
             border-radius: 12px;
-            padding: 1.5rem;
             margin-bottom: 2rem;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            overflow-x: auto;
+            padding: 1rem;
+        }
+
+        .calendar-scroll {
+            min-width: 600px;
+            width: 100%;
         }
 
         .calendar-header {
@@ -546,6 +560,10 @@
             .sponsors-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
+            
+            .calendar-scroll {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
@@ -591,35 +609,37 @@
             <h3 onclick="toggleSection(this)">Team Calendar</h3>
             <div class="section-content">
                 <div class="calendar-container">
-                    <div class="calendar-header">
-                        <h2 class="calendar-title">April 2025</h2>
-                        <div class="calendar-nav">
-                            <button onclick="changeMonth(-1)">←</button>
-                            <button onclick="changeMonth(1)">→</button>
+                    <div class="calendar-scroll">
+                        <div class="calendar-header">
+                            <h2 class="calendar-title">April 2025</h2>
+                            <div class="calendar-nav">
+                                <button onclick="changeMonth(-1)">←</button>
+                                <button onclick="changeMonth(1)">→</button>
+                            </div>
                         </div>
+                        
+                        <table class="calendar">
+                            <thead>
+                                <tr>
+                                    <th>Sun</th>
+                                    <th>Mon</th>
+                                    <th>Tue</th>
+                                    <th>Wed</th>
+                                    <th>Thu</th>
+                                    <th>Fri</th>
+                                    <th>Sat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="calendar-body">
+                                <!-- Calendar will be generated here by JavaScript -->
+                            </tbody>
+                        </table>
                     </div>
-                    
-                    <table class="calendar">
-                        <thead>
-                            <tr>
-                                <th>Sun</th>
-                                <th>Mon</th>
-                                <th>Tue</th>
-                                <th>Wed</th>
-                                <th>Thu</th>
-                                <th>Fri</th>
-                                <th>Sat</th>
-                            </tr>
-                        </thead>
-                        <tbody id="calendar-body">
-                            <!-- Calendar will be generated here by JavaScript -->
-                        </tbody>
-                    </table>
                 </div>
 
                 <div class="event-form">
                     <h3>Add New Event</h3>
-                    <form id="event-form" onsubmit="event.preventDefault(); addEvent();">
+                    <form id="event-form">
                         <div class="form-group">
                             <label for="event-title">Event Title</label>
                             <input type="text" id="event-title" class="form-control" required>
@@ -918,7 +938,7 @@
             
             if (!title || !dateStr) {
                 alert("Please fill in all required fields");
-                return;
+                return false;
             }
             
             const dateParts = dateStr.split("-");
@@ -938,6 +958,8 @@
             
             // Reset form
             document.getElementById("event-form").reset();
+            
+            return false;
         }
 
         // Remove event
@@ -972,6 +994,11 @@
             // Generate calendar for current month
             generateCalendar(currentMonth, currentYear);
             
+            // Set today's date as default in the form
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById("event-date").value = formattedDate;
+            
             // Open the section based on URL hash
             if (window.location.hash) {
                 const targetSection = document.querySelector(window.location.hash);
@@ -982,6 +1009,9 @@
                     }
                 }
             }
+            
+            // Event form submission
+            document.getElementById("event-form").addEventListener('submit', addEvent);
         });
 
         // Service Worker Registration for PWA
@@ -989,7 +1019,7 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(registration => {
-                        console.log('ServiceWorker registration successful');
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
                     })
                     .catch(err => {
                         console.log('ServiceWorker registration failed: ', err);
