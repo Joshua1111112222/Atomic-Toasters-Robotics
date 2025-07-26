@@ -467,17 +467,16 @@
         }
 
         .sponsor-logo {
-            max-width: 100%;
-            height: auto;
-            max-height: 60px;
-            margin-bottom: 0.5rem;
-            filter: grayscale(100%) brightness(1.5);
-            transition: filter 0.3s ease;
-        }
+  filter: none !important;          /* Ensures full color */
+  opacity: 1 !important;
+  transition: transform 0.3s ease;   /* Keep the hover scale if you want */
+}
 
-        .sponsor-card:hover .sponsor-logo {
-            filter: grayscale(0%) brightness(1);
-        }
+.sponsor-logo:hover,
+.sponsor-logo:focus {
+  transform: scale(1.05);
+}
+
 
         .sponsor-name {
             font-weight: 600;
