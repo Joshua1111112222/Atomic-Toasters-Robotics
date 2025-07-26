@@ -1361,9 +1361,12 @@
                     const teamResponse = await fetch(`${baseUrl}/team/${TEAM_NUMBER}`, {
                         method: 'GET',
                         headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+  'X-TOA-Key': 'vcLH7cX+7vQtlI6VqTbDWud10Cu8bDsXDvalOKQ+xvA=', 
+  'X-Application-Origin': 'atomic-toasters-website'
+}
+
                     });
                     
                     if (teamResponse.ok) {
@@ -1376,9 +1379,11 @@
                     const eventsResponse = await fetch(`${baseUrl}/team/${TEAM_NUMBER}/events/${selectedSeason}`, {
                         method: 'GET',
                         headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+  'X-TOA-Key': 'vcLH7cX+7vQtlI6VqTbDWud10Cu8bDsXDvalOKQ+xvA=', 
+  'X-Application-Origin': 'atomic-toasters-website'
+}
                     });
                     
                     if (eventsResponse.ok) {
@@ -1405,9 +1410,11 @@
                     const eventsResponse = await fetch(`https://theorangealliance.org/api/team/${TEAM_NUMBER}/events`, {
                         method: 'GET',
                         headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+  'X-TOA-Key': 'vcLH7cX+7vQtlI6VqTbDWud10Cu8bDsXDvalOKQ+xvA=', 
+  'X-Application-Origin': 'atomic-toasters-website'
+}
                     });
                     
                     if (eventsResponse.ok) {
@@ -1596,39 +1603,48 @@
         });
 
         // Initialize the page
-        window.addEventListener('load', () => {
-            // Generate calendar for current month
-            generateCalendar(currentMonth, currentYear);
-            
-            // Set today's date as default in the form
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0];
-            document.getElementById("event-date").value = formattedDate;
-            
-            // Open the section based on URL hash
-            if (window.location.hash) {
-                const targetSection = document.querySelector(window.location.hash);
-                if (targetSection) {
-                    const header = targetSection.querySelector('h3');
-                    if (header) {
-                        toggleSection(header);
-                    }
-                }
+        window.addEventListener('load', async () => {
+    // 1. Generate calendar for current month
+    generateCalendar(currentMonth, currentYear);
+
+    // 2. Set today's date as default in the event form
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+    document.getElementById("event-date").value = formattedDate;
+
+    // 3. Open section if URL has hash
+    if (window.location.hash) {
+        const targetSection = document.querySelector(window.location.hash);
+        if (targetSection) {
+            const header = targetSection.querySelector('h3');
+            if (header) {
+                toggleSection(header);
             }
-            
-            // Event form submission
-            document.getElementById("event-form").addEventListener('submit', function(e) {
-                e.preventDefault();
-                addEvent();
-            });
-            
-            // Start image carousel
-            showSlide(0); // Show first slide initially
-            startCarousel();
-            
-            // Fetch data from The Orange Alliance
-            fetchTeamData();
-        });
+        }
+    }
+
+    // 4. Handle event form submission
+    document.getElementById("event-form").addEventListener('submit', function(e) {
+        e.preventDefault();
+        addEvent();
+    });
+
+    // 5. Start carousel
+    showSlide(0);
+    startCarousel();
+
+    // 6. Try to fetch from The Orange Alliance (await it)
+    await fetchTeamData();
+
+    // 7. If no countdown initialized by API, use fallback static countdown
+    const daysValue = document.getElementById('days').textContent;
+    if (daysValue === '--') {
+        const manualEventDate = '2025-10-12T10:00:00'; // <== Edit this to your static date
+        const manualEventName = 'Metro Detroit League Tournament';
+        const manualEventLocation = 'Plymouth Christian Academy, MI';
+        startCountdown(manualEventDate, manualEventName, manualEventLocation);
+    }
+});
     </script>
 </body>
 </html>
