@@ -182,11 +182,11 @@
             overflow-y: auto;
         }
 
-        /* Updated Image Carousel */
+        /* Fixed Image Carousel */
         .carousel {
             position: relative;
             width: 100%;
-            height: 500px; /* Increased height */
+            height: 500px;
             overflow: hidden;
             border-radius: 12px;
             margin-bottom: 2rem;
@@ -194,18 +194,19 @@
         }
 
         .carousel-inner {
-            display: flex;
-            height: 100%;
-            transition: transform 0.5s ease;
+            position: relative;
             width: 100%;
+            height: 100%;
         }
 
         .carousel-item {
-            min-width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            position: relative;
-            transition: opacity 0.5s ease;
             opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         .carousel-item.active {
@@ -216,6 +217,19 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* Placeholder for missing images */
+        .carousel-item .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary-dark), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .carousel-caption {
@@ -231,6 +245,8 @@
         .carousel-caption h3 {
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
+            background: none;
+            padding: 0;
         }
 
         .carousel-controls {
@@ -341,6 +357,44 @@
         .no-events {
             color: var(--text-secondary);
             font-style: italic;
+        }
+
+        .loading {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-style: italic;
+        }
+
+        /* Season selector */
+        .season-selector {
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .season-selector label {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .season-selector select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+
+        .season-selector select:focus {
+            outline: none;
+            border-color: var(--accent);
         }
 
         /* Team Members Section */
@@ -709,7 +763,7 @@
             }
             
             .carousel {
-                height: 300px; /* Adjusted for mobile */
+                height: 300px;
             }
             
             .carousel-caption h3 {
@@ -768,21 +822,30 @@
         <div class="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="team.png" alt="Atomic Toasters Team Photo">
+                    <img src="team.png" alt="Atomic Toasters Team Photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-placeholder" style="display: none;">
+                        Team Photo
+                    </div>
                     <div class="carousel-caption">
                         <h3>Atomic Toasters 2025</h3>
                         <p>Our team at the Metro Detroit League Tournament</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="robot.png" alt="Robot Design">
+                    <img src="robot.png" alt="Robot Design" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-placeholder" style="display: none;">
+                        Robot Design
+                    </div>
                     <div class="carousel-caption">
                         <h3>Innovative Design</h3>
                         <p>Our innovative robot design</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="drive.png" alt="Drive Team">
+                    <img src="drive.png" alt="Drive Team" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-placeholder" style="display: none;">
+                        Drive Team
+                    </div>
                     <div class="carousel-caption">
                         <h3>Drive Team</h3>
                         <p>Our drive team consists of Joshua The, Caleb Wieland, Steve Freece, and Loriel Achonduh (Not pictured: Chloe Malcolm)</p>
@@ -822,11 +885,21 @@
                 </div>
             </div>
             <div id="next-event-info" class="next-event-info">
-                Loading next event information...
+                <div class="loading">Loading next event information...</div>
             </div>
             <div id="team-stats" style="margin-top: 1.5rem;">
                 <h3>Team Statistics</h3>
-                <p>Loading team data from The Orange Alliance...</p>
+                <div class="season-selector">
+                    <label for="season-select">Season:</label>
+                    <select id="season-select" onchange="fetchTeamData()">
+                        <option value="2024">2024-2025</option>
+                        <option value="2023">2023-2024</option>
+                        <option value="2022">2022-2023</option>
+                    </select>
+                </div>
+                <div id="team-stats-content">
+                    <div class="loading">Loading team data from The Orange Alliance...</div>
+                </div>
             </div>
         </div>
 
@@ -1039,8 +1112,8 @@
     </footer>
 
     <script>
-        // Load events from localStorage or initialize with default events
-        let events = JSON.parse(localStorage.getItem('atomicToastersEvents')) || [
+        // Load events from memory or initialize with default events
+        let events = [
             { id: Date.now(), date: new Date().toISOString(), title: "Team Meeting", type: "meeting", description: "Weekly strategy meeting" },
             { id: Date.now()+1, date: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(), title: "Build Session", type: "practice", description: "Robot assembly practice" },
             { id: Date.now()+2, date: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString(), title: "Regional Qualifiers", type: "competition", description: "FIRST Robotics regional competition" }
@@ -1048,11 +1121,7 @@
         
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
-
-        // Save events to localStorage
-        function saveEvents() {
-            localStorage.setItem('atomicToastersEvents', JSON.stringify(events));
-        }
+        let countdownInterval;
 
         // Section toggle functionality
         function toggleSection(header) {
@@ -1203,7 +1272,6 @@
             };
             
             events.push(newEvent);
-            saveEvents();
             generateCalendar(currentMonth, currentYear);
             
             // Reset form
@@ -1217,7 +1285,6 @@
             e.stopPropagation();
             if (confirm("Are you sure you want to delete this event?")) {
                 events = events.filter(event => event.id !== eventId);
-                saveEvents();
                 generateCalendar(currentMonth, currentYear);
             }
         }
@@ -1263,106 +1330,227 @@
         }
 
         // Orange Alliance API Integration
-        const API_KEY = 'vcLH7cX+7vQtlI6VqTbDWud10Cu8bDsXDvalOKQ+xvA=';
-        const TEAM_NUMBER = '21518'; // Replace with your actual team number
+        const TEAM_NUMBER = '21518';
+        
+        // Multiple API endpoint attempts for better reliability
+        const API_ENDPOINTS = [
+            'https://theorangealliance.org/api',
+            'https://www.theorangealliance.org/api',
+            'https://api.theorangealliance.org'
+        ];
 
         async function fetchTeamData() {
-            try {
-                // First try the new API endpoint
-                let teamResponse = await fetch(`https://theorangealliance.org/apiv2/team/${TEAM_NUMBER}`, {
-                    headers: {
-                        'X-TOA-Key': API_KEY,
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                // If 404, try the old endpoint
-                if (teamResponse.status === 404) {
-                    teamResponse = await fetch(`https://theorangealliance.org/api/team/${TEAM_NUMBER}`, {
+            const selectedSeason = document.getElementById('season-select').value;
+            const statsContent = document.getElementById('team-stats-content');
+            const nextEventInfo = document.getElementById('next-event-info');
+            
+            // Show loading state
+            statsContent.innerHTML = '<div class="loading">Loading team data from The Orange Alliance...</div>';
+            nextEventInfo.innerHTML = '<div class="loading">Loading next event information...</div>';
+
+            let teamData = null;
+            let eventsData = [];
+            let apiWorking = false;
+
+            // Try different API endpoints
+            for (const baseUrl of API_ENDPOINTS) {
+                try {
+                    console.log(`Trying API endpoint: ${baseUrl}`);
+                    
+                    // Fetch team information
+                    const teamResponse = await fetch(`${baseUrl}/team/${TEAM_NUMBER}`, {
+                        method: 'GET',
                         headers: {
-                            'X-TOA-Key': API_KEY,
-                            'Accept': 'application/json'
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
                         }
                     });
-                }
-                
-                if (!teamResponse.ok) throw new Error('Failed to fetch team data');
-                const teamData = await teamResponse.json();
-                
-                // Fetch team events - try new endpoint first
-                let eventsResponse = await fetch(`https://theorangealliance.org/apiv2/team/${TEAM_NUMBER}/events`, {
-                    headers: {
-                        'X-TOA-Key': API_KEY,
-                        'Accept': 'application/json'
+                    
+                    if (teamResponse.ok) {
+                        teamData = await teamResponse.json();
+                        console.log('Team data retrieved successfully');
+                        apiWorking = true;
                     }
-                });
-                
-                // If 404, try old endpoint
-                if (eventsResponse.status === 404) {
-                    eventsResponse = await fetch(`https://theorangealliance.org/api/team/${TEAM_NUMBER}/events`, {
+
+                    // Fetch team events for the selected season
+                    const eventsResponse = await fetch(`${baseUrl}/team/${TEAM_NUMBER}/events/${selectedSeason}`, {
+                        method: 'GET',
                         headers: {
-                            'X-TOA-Key': API_KEY,
-                            'Accept': 'application/json'
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
                         }
                     });
+                    
+                    if (eventsResponse.ok) {
+                        eventsData = await eventsResponse.json();
+                        console.log('Events data retrieved successfully');
+                        apiWorking = true;
+                    }
+
+                    // If we got some data, break out of the loop
+                    if (apiWorking) {
+                        break;
+                    }
+
+                } catch (error) {
+                    console.log(`API endpoint ${baseUrl} failed:`, error.message);
+                    continue;
                 }
+            }
+
+            // Try alternative endpoints if main ones fail
+            if (!apiWorking) {
+                try {
+                    // Try without season parameter
+                    const eventsResponse = await fetch(`https://theorangealliance.org/api/team/${TEAM_NUMBER}/events`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (eventsResponse.ok) {
+                        eventsData = await eventsResponse.json();
+                        apiWorking = true;
+                        console.log('Events data retrieved from fallback endpoint');
+                    }
+                } catch (error) {
+                    console.log('Fallback API also failed:', error.message);
+                }
+            }
+
+            // Display results or fallback data
+            if (apiWorking) {
+                displayTeamStats(teamData, selectedSeason);
                 
-                if (!eventsResponse.ok) throw new Error('Failed to fetch events data');
-                const eventsData = await eventsResponse.json();
-                
-                // Process team data
-                displayTeamStats(teamData);
-                
-                // Process events data to find next event
+                // Find next upcoming event
                 if (eventsData && eventsData.length > 0) {
+                    // Filter events by season if we have season data
+                    let filteredEvents = eventsData;
+                    if (eventsData[0] && eventsData[0].season_key) {
+                        filteredEvents = eventsData.filter(event => 
+                            event.season_key && event.season_key.includes(selectedSeason)
+                        );
+                    }
+                    
                     const now = new Date();
-                    const upcomingEvents = eventsData
-                        .filter(event => new Date(event.start_date) > now)
-                        .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+                    const upcomingEvents = filteredEvents
+                        .filter(event => {
+                            const eventStart = new Date(event.start_date || event.date_start);
+                            return eventStart > now;
+                        })
+                        .sort((a, b) => new Date(a.start_date || a.date_start) - new Date(b.start_date || b.date_start));
                     
                     if (upcomingEvents.length > 0) {
                         const nextEvent = upcomingEvents[0];
-                        startCountdown(nextEvent.start_date, nextEvent.event_name, nextEvent.location);
+                        const eventName = nextEvent.event_name || nextEvent.name || 'Competition';
+                        const eventDate = nextEvent.start_date || nextEvent.date_start;
+                        const eventLocation = (nextEvent.city && nextEvent.state_prov) ? 
+                            `${nextEvent.city}, ${nextEvent.state_prov}` : 
+                            nextEvent.location || 'TBD';
+                        
+                        startCountdown(eventDate, eventName, eventLocation);
                     } else {
-                        document.getElementById('next-event-info').innerHTML = 
-                            '<div class="no-events">No upcoming competitions scheduled</div>';
+                        nextEventInfo.innerHTML = '<div class="no-events">No upcoming competitions scheduled for this season</div>';
+                        clearCountdown();
                     }
                 } else {
-                    document.getElementById('next-event-info').innerHTML = 
-                        '<div class="no-events">No upcoming competitions scheduled</div>';
+                    nextEventInfo.innerHTML = '<div class="no-events">No events found for this season</div>';
+                    clearCountdown();
                 }
-            } catch (error) {
-                console.error('Error fetching data from The Orange Alliance:', error);
-                document.getElementById('next-event-info').innerHTML = 
-                    '<div class="no-events">Could not load event information</div>';
-                document.getElementById('team-stats').innerHTML = 
-                    '<h3>Team Statistics</h3><p>Could not load team data from The Orange Alliance</p>';
+            } else {
+                // Show fallback data when API is completely unavailable
+                displayFallbackData(selectedSeason);
+                nextEventInfo.innerHTML = `
+                    <div class="error">
+                        <p><strong>⚠️ API Currently Unavailable</strong></p>
+                        <p>The Orange Alliance API appears to be down or has changed endpoints.</p>
+                        <p>Please check back later for live event data.</p>
+                        <p>You can visit <a href="https://theorangealliance.org/teams/${TEAM_NUMBER}" target="_blank" style="color: var(--accent);">theorangealliance.org/teams/${TEAM_NUMBER}</a> directly for the latest information.</p>
+                    </div>
+                `;
+                clearCountdown();
             }
         }
 
-        function displayTeamStats(teamData) {
-            const statsContainer = document.getElementById('team-stats');
-            statsContainer.innerHTML = `
-                <h3>Team Statistics</h3>
-                <p><strong>Team Name:</strong> ${teamData.team_name_short || 'Atomic Toasters'}</p>
-                <p><strong>Location:</strong> ${teamData.city || 'Plymouth'}, ${teamData.state_prov || 'MI'}, ${teamData.country || 'USA'}</p>
-                <p><strong>Rookie Year:</strong> ${teamData.rookie_year || '2023'}</p>
-                <p><strong>Website:</strong> ${teamData.website ? `<a href="${teamData.website}" target="_blank">${teamData.website}</a>` : 'Not specified'}</p>
+        function clearCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            document.getElementById('days').textContent = '--';
+            document.getElementById('hours').textContent = '--';
+            document.getElementById('minutes').textContent = '--';
+            document.getElementById('seconds').textContent = '--';
+        }
+
+        function displayFallbackData(season) {
+            const statsContent = document.getElementById('team-stats-content');
+            statsContent.innerHTML = `
+                <p><strong>Team Name:</strong> Atomic Toasters</p>
+                <p><strong>Team Number:</strong> ${TEAM_NUMBER}</p>
+                <p><strong>Location:</strong> Plymouth, MI, USA</p>
+                <p><strong>School:</strong> Plymouth Christian Academy</p>
+                <p><strong>Season:</strong> ${season}-${parseInt(season)+1}</p>
+                <p><strong>Rookie Year:</strong> 2023</p>
+                <p><em>Live API data temporarily unavailable</em></p>
+                <div style="margin-top: 1rem; padding: 1rem; background: rgba(0, 188, 212, 0.1); border-radius: 8px;">
+                    <p><strong>Recent Achievements:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Metro Detroit League Tournament Participants</li>
+                        <li>Innovative Robot Design</li>
+                        <li>Strong Drive Team Performance</li>
+                    </ul>
+                </div>
             `;
+        }
+
+        function displayTeamStats(teamData, season) {
+            const statsContent = document.getElementById('team-stats-content');
+            
+            if (teamData) {
+                statsContent.innerHTML = `
+                    <p><strong>Team Name:</strong> ${teamData.team_name_short || 'Atomic Toasters'}</p>
+                    <p><strong>Full Name:</strong> ${teamData.team_name_long || 'Atomic Toasters Robotics Team'}</p>
+                    <p><strong>Location:</strong> ${teamData.city || 'Plymouth'}, ${teamData.state_prov || 'MI'}, ${teamData.country || 'USA'}</p>
+                    <p><strong>Rookie Year:</strong> ${teamData.rookie_year || '2023'}</p>
+                    <p><strong>Season:</strong> ${season}-${parseInt(season)+1}</p>
+                    ${teamData.website ? `<p><strong>Website:</strong> <a href="${teamData.website}" target="_blank">${teamData.website}</a></p>` : ''}
+                `;
+            } else {
+                statsContent.innerHTML = `
+                    <p><strong>Team Name:</strong> Atomic Toasters</p>
+                    <p><strong>Team Number:</strong> ${TEAM_NUMBER}</p>
+                    <p><strong>Location:</strong> Plymouth, MI, USA</p>
+                    <p><strong>Season:</strong> ${season}-${parseInt(season)+1}</p>
+                    <p><em>Note: Some team details may not be available from The Orange Alliance API</em></p>
+                `;
+            }
         }
 
         function startCountdown(eventDate, eventName, eventLocation) {
             const countdownDate = new Date(eventDate).getTime();
             const countdownElement = document.getElementById('next-event-info');
             
+            // Display event info
             countdownElement.innerHTML = `
                 <h4>${eventName}</h4>
-                <p><strong>Date:</strong> ${new Date(eventDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                <p><strong>Date:</strong> ${new Date(eventDate).toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                })}</p>
                 <p><strong>Location:</strong> ${eventLocation || 'TBD'}</p>
             `;
             
+            // Clear any existing interval
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
             // Update countdown every second
-            const countdownInterval = setInterval(() => {
+            countdownInterval = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = countdownDate - now;
                 
@@ -1372,7 +1560,7 @@
                     document.getElementById('hours').textContent = '0';
                     document.getElementById('minutes').textContent = '0';
                     document.getElementById('seconds').textContent = '0';
-                    countdownElement.innerHTML += '<p>The event has started!</p>';
+                    countdownElement.innerHTML += '<p><strong>🎉 The event has started!</strong></p>';
                     return;
                 }
                 
@@ -1429,7 +1617,10 @@
             }
             
             // Event form submission
-            document.getElementById("event-form").addEventListener('submit', addEvent);
+            document.getElementById("event-form").addEventListener('submit', function(e) {
+                e.preventDefault();
+                addEvent();
+            });
             
             // Start image carousel
             showSlide(0); // Show first slide initially
@@ -1438,19 +1629,6 @@
             // Fetch data from The Orange Alliance
             fetchTeamData();
         });
-
-        // Service Worker Registration for PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
-            });
-        }
     </script>
 </body>
 </html>
