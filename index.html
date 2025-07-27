@@ -1002,44 +1002,81 @@
         </section>
 
         <!-- Team Section -->
-        <section id="team" class="section">
-            <h3 onclick="toggleSection(this)">Our Team</h3>
-            <div class="section-content">
-                <div class="team-member" onclick="toggleTeamDetails(this, 'teachers')">
-                    Teachers
-                </div>
-                <div id="teachers" class="team-details">
-                    - Steve Freece (Mechanical Mentor)<br>
-                    - Jessica Wash<br>
-                    - Sam Oweis (Mechanical Mentor)
-                </div>
+<section id="team" class="section">
+    <h3 onclick="toggleSection(this)">Our Team at a Glance</h3>
+    <div class="section-content">
+        <div class="team-member" onclick="toggleTeamDetails(this, 'teachers')">
+            Teachers
+        </div>
+        <div id="teachers" class="team-details">
+            - Steve Freece (Mechanical Mentor)<br>
+            - Jessica Wash<br>
+            - Sam Oweis (Mechanical Mentor)
+        </div>
 
-                <div class="team-member" onclick="toggleTeamDetails(this, 'mentors')">
-                    Mentors
-                </div>
-                <div id="mentors" class="team-details">
-                    - Jadon Wright<br>
-                </div>
+        <div class="team-member" onclick="toggleTeamDetails(this, 'mentors')">
+            Mentors
+        </div>
+        <div id="mentors" class="team-details">
+            - Jadon Wright<br>
+        </div>
 
-                <div class="team-member" onclick="toggleTeamDetails(this, 'softwareTeam')">
-                    Software Team
-                </div>
-                <div id="softwareTeam" class="team-details">
-                    - Joshua The
-                </div>
+        <div class="team-member" onclick="toggleTeamDetails(this, 'softwareTeam')">
+            Software Team
+        </div>
+        <div id="softwareTeam" class="team-details">
+            - Joshua The
+        </div>
 
-                <div class="team-member" onclick="toggleTeamDetails(this, 'mechanicalTeam')">
-                    Mechanical Team
-                </div>
-                <div id="mechanicalTeam" class="team-details">
-                    - Caleb Wieland<br>
-                    - Loriel Achondah<br>
-                    - Nathan Hurd<br>
-                    - Evan Sylvester<br>
-                    - Aiden Dejesus
-                </div>
+        <div class="team-member" onclick="toggleTeamDetails(this, 'mechanicalTeam')">
+            Mechanical Team
+        </div>
+        <div id="mechanicalTeam" class="team-details">
+            - Caleb Wieland<br>
+            - Loriel Achondah<br>
+            - Nathan Hurd<br>
+            - Evan Sylvester<br>
+            - Aiden Dejesus
+        </div>
+    </div>
+</section>
+
+<!-- Get to Know Us Section -->
+<section class="section">
+    <h3 onclick="toggleSection(this)">Get to Know Us</h3>
+    <div class="section-content">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+            <!-- Example Member -->
+            <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; align-items: center;">
+                <img src="joshua.png" alt="Joshua The" style="width: 100%; border-radius: 12px; max-height: 250px; object-fit: cover;">
+                <h4 style="margin-top: 0.75rem; color: var(--accent); font-size: 1.1rem;">Joshua The</h4>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; text-align: left; margin-top: 0.5rem; max-height: none; overflow-y: auto;">
+                    Joshua is the lead programmer for Atomic Toasters and also a drive team member. He has written most of the software for our autonomous and teleop modes, helped lead the development of our scouting apps, and even built internal tools for performance analysis. Outside of robotics, he enjoys coding full-stack apps and building cool things with Python and JavaScript. He’s passionate about bringing innovation to the team and constantly experimenting with new ideas.
+                </p>
             </div>
-        </section>
+
+            <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; align-items: center;">
+                <img src="caleb.png" alt="Caleb Wieland" style="width: 100%; border-radius: 12px; max-height: 250px; object-fit: cover;">
+                <h4 style="margin-top: 0.75rem; color: var(--accent); font-size: 1.1rem;">Caleb Wieland</h4>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; text-align: left; margin-top: 0.5rem; max-height: none; overflow-y: auto;">
+                    Caleb is a mechanical member for the Atomic Toasters and also a drive team member. He has been instrumental in designing and building our robot's mechanisms and mechanical systems.
+                </p>
+            </div>
+            
+            <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; align-items: center;">
+                <img src="loriel.png" alt="Loriel Achonduh" style="width: 100%; border-radius: 12px; max-height: 250px; object-fit: cover;">
+                <h4 style="margin-top: 0.75rem; color: var(--accent); font-size: 1.1rem;">Loriel Achonduh</h4>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; text-align: left; margin-top: 0.5rem; max-height: none; overflow-y: auto;">
+                    Loriel is a mechanical member for the Atomic Toasters and also a drive team member. She has been instrumental in designing and building our robot's slides and other systems on our robot.
+                </p>
+            </div>
+           
+
+            <!-- Add more members below following the same format -->
+        </div>
+    </div>
+</section>
+
 
         <!-- Sponsors Section -->
         <section id="sponsors" class="section">
