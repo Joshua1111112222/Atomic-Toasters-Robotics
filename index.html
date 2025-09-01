@@ -802,6 +802,32 @@
                 min-width: 100%;
             }
         }
+                /* Resources Section Styles */
+            .resource-card {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                transition: all 0.3s ease;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .resource-card:hover {
+                border-color: var(--accent);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            .resource-title {
+                color: var(--accent);
+                margin-bottom: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .resource-description {
+                color: var(--text-secondary);
+                margin-bottom: 1rem;
+            }
     </style>
 </head>
 <body>
@@ -814,6 +840,7 @@
         <a href="#about">About</a>
         <a href="#calendar">Calendar</a>
         <a href="#team">Team</a>
+        <a href="#resources">Resources</a>
         <a href="#sponsors">Sponsors</a>
         <a href="#contact">Contact</a>
     </nav>
@@ -1078,6 +1105,47 @@
     </div>
 </section>
 
+                        <!-- Resources Section -->
+        <section id="resources" class="section">
+            <h3 onclick="toggleSection(this)">Team Resources</h3>
+            <div class="section-content">
+                <div class="resource-card">
+                    <h4 class="resource-title">Team Intro Letter</h4>
+                    <p class="resource-description">Download our complete team Intro letter with rules, guidelines, and important information.</p>
+                    <a href="team-intro.pdf" download class="btn btn-accent">
+                        <svg style="width: 18px; height: 18px; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Download Letter
+                    </a>
+                </div>
+        
+                <div class="resource-card">
+                    <h4 class="resource-title">View Letter Online</h4>
+                    <p class="resource-description">Preview the team letter directly in your browser.</p>
+                    <div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden; margin-top: 1rem;">
+                        <iframe src="team-letter.pdf" width="100%" height="500px" style="border: none;"></iframe>
+                    </div>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                        Can't view the PDF? <a href="team-letter.pdf" download style="color: var(--accent);">Download it here</a>
+                    </p>
+                </div>
+        
+                <div class="resource-card">
+                    <h4 class="resource-title">Additional Resources</h4>
+                    <p class="resource-description">This space is reserved for future resources and content.</p>
+                    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 8px; padding: 2rem; text-align: center; margin-top: 1rem;">
+                        <svg style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <p style="color: var(--text-secondary); font-style: italic; margin: 0;">
+                            Content will be added here as needed.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <!-- Sponsors Section -->
         <section id="sponsors" class="section">
@@ -1137,8 +1205,8 @@
             <h3 onclick="toggleSection(this)">Contact Us</h3>
             <div class="section-content">
                 <p>
-                    <strong>Email:</strong> <a href="mailto:joshuathe2011@gmail.com">joshuathe2011@gmail.com</a><br>
-                    <strong>Phone:</strong> (734) 788-0899<br>
+                    <strong>Email:</strong> <a href="mailto:steve.freece@plymouthchristian.org"></a><br>
+                    <strong>Phone:</strong> 734-459-3505 x3606<br>
                     <strong>Address:</strong> Plymouth Christian Academy, Michigan<br><br>
                     
                     Follow us on YouTube: <strong>The Atomic Toasters FTC</strong>
